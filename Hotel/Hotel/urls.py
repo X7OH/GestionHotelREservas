@@ -28,5 +28,7 @@ urlpatterns = [
     path('Habitacion', views.registrar_habitacion, name="Habitacion"),
     path('login/', views.login, name='login'),
     path('VerHabitaciones/', views.VerHabitaciones, name='VerHabitaciones'),
+    path('VerReservas/', views.VerReservas, name='VerReservas'),
+    
     
 ]
