@@ -17,3 +17,11 @@ class ReservasAdmin(admin.ModelAdmin):
     list_filter = ('piso',)  # Filtros por piso
 
 admin.site.register(Reservas, ReservasAdmin)
+
+admin.site.register(Habitacion)
+class HabitacionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'piso', 'nhabitacion', 'Estado')  # Campos visibles en la lista
+    search_fields = ('nhabitacion',)  # Búsqueda por número de habitación
+    list_filter = ('Estado', 'piso')  # Filtros por estado y piso
+
+admin.site.register(Habitacion, HabitacionAdmin)
