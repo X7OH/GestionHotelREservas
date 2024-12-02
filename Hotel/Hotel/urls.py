@@ -31,5 +31,5 @@ urlpatterns = [
     path('VerHabitaciones/', views.VerHabitaciones, name='VerHabitaciones'),
     path('VerReservas/', views.VerReservas, name='VerReservas'),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    
+    path('redocs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
