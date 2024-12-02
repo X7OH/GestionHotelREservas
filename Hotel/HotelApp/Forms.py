@@ -94,3 +94,8 @@ class ReservaForm(forms.ModelForm):
         cleaned_data = super().clean()
         piso = cleaned_data.get('piso')
         nhabitacion = cleaned_data.get('nhabitacion')
+
+        if piso <= 0:
+            raise forms.ValidationError("El número de piso debe ser mayor a 0.")
+        if nhabitacion <= 0:
+            raise forms.ValidationError("El número de la habitación debe ser mayor a 0.")
