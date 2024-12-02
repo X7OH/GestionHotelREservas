@@ -1,5 +1,5 @@
 from django import forms
-from HotelApp.models import Usuario
+from HotelApp.models import Usuario, Habitacion, Reservas
 import re
 
 class RegUs(forms.ModelForm):
@@ -99,3 +99,14 @@ class ReservaForm(forms.ModelForm):
             raise forms.ValidationError("El número de piso debe ser mayor a 0.")
         if nhabitacion <= 0:
             raise forms.ValidationError("El número de la habitación debe ser mayor a 0.")
+        
+
+class HabitacionForm(forms.ModelForm):
+    class Meta:
+        model = Habitacion
+        fields = ['piso', 'nhabitacion', 'Estado']
+        widgets = {
+            'piso': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Piso'}),
+            'nhabitacion': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de Habitación'}),
+            'Estado': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
