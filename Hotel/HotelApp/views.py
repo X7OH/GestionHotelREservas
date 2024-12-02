@@ -1,4 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import check_password
 from django.utils.decorators import method_decorator
 import json
 from HotelApp.models import Usuario, Reservas,Habitacion 
@@ -144,3 +145,36 @@ def VerReservas(request):
         return JsonResponse({'reservas': reservas_lista}, status=200)
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+@csrf_exempt
+def login(request):
+    if request.method == "POST":
+        try:
+            # Parsear los datos de la solicitud JSON
+            data = json.loads(request.body)
+            correo = data.get('correo')
+            contraseña = data.get('contraseña')
+
+            # Verificar si el correo y la contraseña están presentes
+            if not correo or not contraseña:
+                return JsonResponse({'error': 'Correo y contraseña son obligatorios'}, status=400)
+
+            # Buscar al usuario por correo
+            try:
+                usuario = Usuario.objects.get(correo=correo)
+            except Usuario.DoesNotExist:
+                return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+
+            # Validar la contraseña
+            if not check_password(contraseña, usuario.contraseña):
+                return JsonResponse({'error': 'Contraseña incorrecta'}, status=401)
+
+            # Retornar un mensaje de bienvenida en JSON
+            return JsonResponse({'message': f'Bienvenido {usuario.correo}'}, status=200)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Formato JSON no válido'}, status=400)
+
+    # Si no es un método POST, retornar error
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
