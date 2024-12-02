@@ -20,6 +20,19 @@ from HotelApp import views
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Hotel Reservations API",
+      default_version='v1',
+      description="API para la gestión de reservas de hoteles",
+      terms_of_service="https://www.hotelApi.com",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   #permission_classes=(permissions.AllowAny,),
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name="home"),
