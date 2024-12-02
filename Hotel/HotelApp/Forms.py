@@ -35,3 +35,15 @@ class RegUs(forms.ModelForm):
         return contraseña
 
     
+class LoginForm(forms.Form):
+    correo = forms.EmailField(
+        label="Correo Electrónico",
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su correo'}),
+        max_length=254
+    )
+    contraseña = forms.CharField(
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su contraseña'}),
+        max_length=128
+    )
+
