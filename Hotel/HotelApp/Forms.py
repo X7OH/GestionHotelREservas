@@ -101,6 +101,7 @@ class ReservaForm(forms.ModelForm):
             raise forms.ValidationError("El número de la habitación debe ser mayor a 0.")
         
 
+
 class HabitacionForm(forms.ModelForm):
     class Meta:
         model = Habitacion
@@ -110,3 +111,15 @@ class HabitacionForm(forms.ModelForm):
             'nhabitacion': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de Habitación'}),
             'Estado': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+    def clean_piso(self):
+        piso = self.cleaned_data.get('piso')
+        if piso <= 0:
+            raise forms.ValidationError("El número de piso debe ser mayor a 0.")
+        return piso
+
+    def clean_nhabitacion(self):
+        nhabitacion = self.cleaned_data.get('nhabitacion')
+        if nhabitacion <= 0:
+            raise forms.ValidationError("El número de la habitación debe ser mayor a 0.")
+        return nhabitacion
