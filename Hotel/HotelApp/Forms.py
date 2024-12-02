@@ -59,3 +59,38 @@ class LoginForm(forms.Form):
         if len(contraseña) < 8:
             raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
         return contraseña
+    
+class ReservaForm(forms.ModelForm):
+    class Meta:
+        model = Reservas
+        fields = ['nombre', 'correo', 'contraseña', 'piso', 'nhabitacion']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo'}),
+            'contraseña': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}),
+            'piso': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Piso'}),
+            'nhabitacion': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de Habitación'}),
+        }
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get('nombre')
+        if not re.match(r'^[a-zA-Z ]+$', nombre):
+            raise forms.ValidationError("El nombre solo puede contener letras y espacios.")
+        return nombre
+
+    def clean_correo(self):
+        correo = self.cleaned_data.get('correo')
+        if not re.match(r'^\S+@\S+\.\S+$', correo):
+            raise forms.ValidationError("Por favor, ingresa un correo válido.")
+        return correo
+
+    def clean_contraseña(self):
+        contraseña = self.cleaned_data.get('contraseña')
+        if len(contraseña) < 8:
+            raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
+        return contraseña
+
+    def clean(self):
+        cleaned_data = super().clean()
+        piso = cleaned_data.get('piso')
+        nhabitacion = cleaned_data.get('nhabitacion')
