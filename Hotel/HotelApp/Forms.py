@@ -47,3 +47,15 @@ class LoginForm(forms.Form):
         max_length=128
     )
 
+    def clean_correo(self):
+        correo = self.cleaned_data.get('correo')
+        # Validación personalizada si es necesario, por ejemplo, formato adicional
+        if not re.match(r"^[^@]+@[^@]+\.[^@]+$", correo):
+            raise forms.ValidationError("Ingrese un correo válido.")
+        return correo
+
+    def clean_contraseña(self):
+        contraseña = self.cleaned_data.get('contraseña')
+        if len(contraseña) < 8:
+            raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
+        return contraseña
