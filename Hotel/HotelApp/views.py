@@ -135,3 +135,12 @@ def VerHabitaciones(request):
         return JsonResponse({'habitaciones': habitaciones_lista}, status=200)
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+@csrf_exempt
+def VerReservas(request):
+    if request.method == "GET":
+        reservas = Reservas.objects.all().values('nombre', 'correo', 'piso', 'nhabitacion')
+        reservas_lista = list(reservas)  # Convertir QuerySet a lista
+        return JsonResponse({'reservas': reservas_lista}, status=200)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
