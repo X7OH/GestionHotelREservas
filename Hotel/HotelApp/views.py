@@ -125,3 +125,13 @@ def registrar_reserva(request):
         except Exception as e:
             return JsonResponse({'message': f'Error inesperado: {str(e)}'}, status=500)
     return JsonResponse({'message': 'Método no permitido'}, status=405)
+
+
+@csrf_exempt
+def VerHabitaciones(request):
+    if request.method == "GET":
+        habitaciones = Habitacion.objects.all().values('piso', 'nhabitacion', 'Estado')
+        habitaciones_lista = list(habitaciones)  # Convertir QuerySet a lista
+        return JsonResponse({'habitaciones': habitaciones_lista}, status=200)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
