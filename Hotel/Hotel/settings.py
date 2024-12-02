@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'HotelApp',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
