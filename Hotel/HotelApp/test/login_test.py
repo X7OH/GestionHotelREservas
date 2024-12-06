@@ -1,14 +1,59 @@
-# conftest.py
 import pytest
-from HotelApp import Usuario
+from django.urls import reverse
+from HotelApp.models import Usuario
+from django.contrib.auth.hashers import make_password
 
 @pytest.fixture
-def user():
-    return Usuario.objects.create_user(username='testuser', password='testpass')
+def usuario_creado(db):
+    """Crear un usuario en la base de datos para las pruebas."""
+    return Usuario.objects.create(
+        nombre="Juan Perez",
+        correo="juan.perez@example.com",
+        contraseña=make_password("12345678"),  # Encriptar contraseña
+        Ciudad="Quito",
+        rol="Cliente"
+    )
 
-# test_views.py
-def test_login(user, client):
-    url = reverse('login')
-    response = client.post(url, {'username': 'testuser', 'password': 'testpass'})
+@pytest.mark.django_db
+def test_login_exitoso(client, usuario_creado):
+    """Probar un inicio de sesión exitoso."""
+    url = reverse('login')  # Reemplaza 'login' con el nombre de tu vista si usas `path()` o `name`.
+    data = {
+        "correo": "juan.perez@example.com",
+        "contraseña": "12345678"
+    }
+
+    response = client.post(url, data, content_type="application/json")
+
     assert response.status_code == 200
-    assert b'Bienvenido, testuser' in response.content
+    assert response.json() == {"message": "Bienvenido juan.perez@example.com"}
+
+
+@pytest.mark.django_db
+def test_login_usuario_no_encontrado(client):
+    """Probar intento de inicio de sesión con usuario inexistente."""
+    url = reverse('login')
+    data = {
+        "correo": "no.existe@example.com",
+        "contraseña": "12345678"
+    }
+
+    response = client.post(url, data, content_type="application/json")
+
+    assert response.status_code == 404
+    assert response.json() == {"error": "Usuario no encontrado"}
+
+
+@pytest.mark.django_db
+def test_login_contraseña_incorrecta(client, usuario_creado):
+    """Probar inicio de sesión con contraseña incorrecta."""
+    url = reverse('login')
+    data = {
+        "correo": "juan.perez@example.com",
+        "contraseña": "contraseña_incorrecta"
+    }
+
+    response = client.post(url, data, content_type="application/json")
+
+    assert response.status_code == 401
+    assert response.json() == {"error": "Contraseña incorrecta"}
