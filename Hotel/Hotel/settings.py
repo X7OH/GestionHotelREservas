@@ -150,5 +150,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Ahora puedes importar tu modelo
-from HotelApp.models import Usuario
+# # Ahora puedes importar tu modelo
+# from HotelApp.models import Usuario

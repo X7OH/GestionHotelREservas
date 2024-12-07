@@ -11,7 +11,7 @@ def home(request):
     rol = request.session.get('usuario_rol', None)
     correo = request.session.get('usuario_correo', None)
     return JsonResponse({
-        'message': 'Bienvenido a la API de Tienda Mascota',
+        'message': 'Bienvenido a la Gestion de Reservas Hotel',
         'user_role': rol,
         'user_email': correo
     })
