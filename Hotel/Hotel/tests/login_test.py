@@ -2,6 +2,13 @@ import pytest
 from django.urls import reverse
 from HotelApp.models import Usuario
 from django.contrib.auth.hashers import make_password
+import os
+import django
+
+# Asegúrate de que el entorno de Django apunte al archivo settings.py correcto
+os.environ['DJANGO_SETTINGS_MODULE'] = 'Hotel.settings'  # 'Hotel' es el nombre de tu proyecto y 'settings' es el archivo de configuración
+django.setup()
+
 
 @pytest.fixture
 def usuario_creado(db):
